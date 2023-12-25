@@ -1,0 +1,171 @@
+section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  margin-top: 5%;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3.125rem;
+  border: 1px solid #2245c2;
+  background: #fff;
+  width: 60%;
+  padding: 0.2rem;
+  margin: 1rem 0;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+  width: calc(100% - 9rem);
+}
+
+.inputField {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  caret-color: #2245c2;
+  color: #2245c2;
+}
+
+.inputField::placeholder {
+  color: rgba(34, 69, 194, 0.5);
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.submitBtn {
+  border: none;
+  border-radius: 3.125rem;
+  background: #2245c2;
+  padding: 0.5rem;
+  color: #fff;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  line-height: 130%; /* 1.63963rem */
+  width: 7rem;
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rightCol {
+  width: 30%;
+}
+
+.searchGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3.125rem;
+  border: 1px solid #2245c2;
+  background: #fff;
+  padding: 0 0.2rem;
+}
+
+.searchGroup .inputField {
+  padding-left: 0.5rem;
+  color: #2245c2;
+  caret-color: #2245c2;
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  font-style: normal;
+}
+
+.searchGroup .inputField::placeholder {
+  color: rgba(34, 69, 194, 0.39);
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  font-style: normal;
+  line-height: 130%; /* 1.50475rem */
+}
+
+.searchBtn {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 3rem;
+}
+
+.paper {
+  background: #fff;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.paper .paperContent .urlLogo {
+  width: 10%;
+}
+
+.paper .paperContent {
+  display: flex;
+  gap: 1rem;
+  width: 70%;
+}
+
+.paperContent .urlContent span {
+  color: #bfbfbf;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  line-height: 130%; /* 1.96719rem */
+}
+
+.shortenedUrl {
+  color: #2245c2;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  text-decoration: none;
+  line-height: 130%; /* 1.96719rem */
+}
+
+.shortenedUrl:hover {
+  text-decoration: underline;
+}
+
+.actions {
+  width: 25%;
+  display: flex;
+  justify-content: space-between;
+  align-items: first baseline;
+}
+
+.actions button {
+    background: #fff;
+    border: 1px solid #2245c2;
+    border-radius: .2rem;
+}
+
+.actions .group {
+    display: flex;
+    gap: .5rem;
+}

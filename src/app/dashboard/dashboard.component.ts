@@ -88,6 +88,21 @@ export class DashboardComponent implements OnInit {
   }
 
   handleCopyUrl(shortenedUrlElementRef: any) {
+    let inputElement = document.createElement('input');
+    inputElement.setAttribute('type', 'text');
+    inputElement.setAttribute('value', shortenedUrlElementRef.innerHTML);
+    inputElement.select();
+    inputElement.setSelectionRange(0, 999999); // This is for mobile selection.
 
+    try {
+      navigator.clipboard.writeText(inputElement.value);
+      this.isTextCopied = true;
+
+      setTimeout(() => {
+        this.isTextCopied = false;
+      }, 2000);
+    } catch (error) {
+      console.warn(error);
+    }
   }
 }

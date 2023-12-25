@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgTinyUrlService } from 'ng-tiny-url';
 import { ShortenedUrlsService } from '../services/shortened-urls.service';
@@ -18,7 +18,7 @@ interface URLData {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   title = 'Shortingo';
   brandImageUrl: string = 'assets/images/Shortingo.svg';
   linkIconUrl: string = 'assets/images/link.svg';
@@ -39,10 +39,55 @@ export class DashboardComponent {
 
   urlsData: Array<object> = [];
 
-  constructor(
-    private _ngTinyUrlService: NgTinyUrlService,
-    private _saveUrl: ShortenedUrlsService
-  ) {}
+  constructor(private _ngTinyUrlService: NgTinyUrlService, private _saveUrl: ShortenedUrlsService) {}
 
-  handleOnSubmit() {}
+  ngOnInit(): void {
+    this.getSavedUrls();
+  }
+
+  handleOnSubmit() {
+    this.isLoading = true;
+    if (this.model.inputUrl !== '') {
+      this._ngTinyUrlService.shorten(this.model.inputUrl).subscribe({
+        next: (shortUrl) => {
+          this.model.shortenedUrl = shortUrl;
+          this.isFormSubmitted = true;
+          this.isLoading = false;
+
+          this._saveUrl.saveUrlToDatebase(this.model).subscribe({
+            next: () => {
+              this.getSavedUrls();
+            }, 
+            error: (error) => {
+              console.log(error.message);
+            }
+          })
+        },
+        error: (error) => {
+          this.isLoading = false;
+          alert('Something went wrong! Please, check your url and try again.');
+          console.error('Error occurred while shortening URL:', error);
+        },
+      });
+    } else {
+      this.isLoading = false;
+      alert('Please enter or paste a URL');
+    }
+  }
+
+  getSavedUrls() {
+    this._saveUrl.getSavedUrls().subscribe({
+      next: (response: any) => {
+        this.urlsData = response;
+      }, 
+      error: (error: any) => {
+        console.log(error.message);
+        
+      }
+    })
+  }
+
+  handleCopyUrl(shortenedUrlElementRef: any) {
+
+  }
 }

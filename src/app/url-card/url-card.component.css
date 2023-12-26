@@ -1,0 +1,52 @@
+.paper {
+  background: #fff;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.paper .paperContent {
+  display: flex;
+  gap: 1rem;
+  width: 70%;
+}
+
+.paperContent .urlContent span {
+  color: #bfbfbf;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  line-height: 130%; /* 1.96719rem */
+}
+
+.shortenedUrl {
+  color: #2245c2;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  text-decoration: none;
+  line-height: 130%; /* 1.96719rem */
+}
+
+.shortenedUrl:hover {
+  text-decoration: underline;
+}
+
+.actions {
+  width: 25%;
+  display: flex;
+  justify-content: space-between;
+  align-items: first baseline;
+}
+
+.actions button {
+    background: #fff;
+    border: 1px solid #2245c2;
+    border-radius: .2rem;
+}
+
+.actions .group {
+    display: flex;
+    gap: .5rem;
+}

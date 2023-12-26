@@ -1,1 +1,40 @@
-<p>url-card works!</p>
+ @for (item of dashboardData.urlsData; track $index) {
+
+<div class="paper">
+  <div class="paperContent">
+    <div class="urlLogo">
+      <img [src]="item.urlLogo" alt="Url Logo" />
+    </div>
+    <div class="urlContent">
+      <h6>{{ item.title }}</h6>
+      <span>Short Link</span> <br />
+      <a
+        class="shortenedUrl"
+        #shortenedUrlElementRef
+        [href]="item.shortenedUrl"
+        target="_blank"
+        title="Open the link in a new tab."
+      >
+        {{ item.shortenedUrl }}</a
+      >
+      <br />
+      <span>Original Link</span> <br />
+      <p>{{ item.inputUrl }}</p>
+      <p><i class="bi bi-calendar"></i> {{ item.date }}</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button (click)="dashboardData.handleCopyUrl(shortenedUrlElementRef)">
+      <i class="bi bi-copy"></i>
+      {{ dashboardData.isTextCopied ? "copied" : "copy" }}
+    </button>
+
+    <div class="group">
+      <button><i class="bi bi-star"></i></button>
+      <button><i class="bi bi-pencil-fill"></i></button>
+      <button (click)="dashboardData.deleteUrl(item.id)"><i class="bi bi-trash-fill"></i></button>
+      <button><i class="bi bi-share-fill"></i></button>
+    </div>
+  </div>
+</div>
+} 

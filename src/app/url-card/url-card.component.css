@@ -40,8 +40,11 @@
   align-items: first baseline;
 }
 
-.actions .copyBtn {
+.copyBtn {
   background: #efefef;
+  border: 1px solid #2245c2;
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.5rem;
   color: #000;
   text-align: center;
   font-family: "Roboto", sans-serif;
@@ -62,6 +65,19 @@
 }
 
 .actions .group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#socialMedia {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#socialMedia .media {
+  text-decoration: none;
+  color: #000;
   display: flex;
   gap: 0.5rem;
 }

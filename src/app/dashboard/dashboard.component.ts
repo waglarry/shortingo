@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private _ngTinyUrlService: NgTinyUrlService,
-    private _saveUrl: ShortenedUrlsService
+    private _saveUrl: ShortenedUrlsService,
   ) {}
 
   ngOnInit(): void {

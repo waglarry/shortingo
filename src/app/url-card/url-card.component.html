@@ -44,7 +44,7 @@
       </button>
       <button
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        data-bs-target="#exampleModal"
         (click)="setModelId(item)"
       >
         <i class="bi bi-pencil-fill"></i>
@@ -52,7 +52,13 @@
       <button (click)="item.id && dashboardData.deleteUrl(item.id)">
         <i class="bi bi-trash-fill"></i>
       </button>
-      <button><i class="bi bi-share-fill"></i></button>
+      <button
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        (click)="handleShare()"
+      >
+        <i class="bi bi-share-fill"></i>
+      </button>
     </div>
   </div>
 </div>
@@ -60,14 +66,13 @@
 <!-- Modal -->
 <div
   class="modal fade"
-  id="staticBackdrop"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
+  id="exampleModal"
   tabindex="-1"
-  aria-labelledby="staticBackdropLabel"
+  aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    @if (modelDialog === 'edit') {
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">
@@ -131,6 +136,27 @@
         </button>
       </div>
     </div>
+    } @else {
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          class="copyBtn"
+          (click)="dashboardData.handleCopyUrl(shortenedUrlElementRef)"
+        >
+          <i class="bi bi-copy"></i>
+          {{ dashboardData.isTextCopied ? "copied" : "copy" }}
+        </button>
+      </div>
+      <div class="modal-body" id="socialMedia">
+        @for (item of mediaPlatforms; track item) {
+          <a class="media" [href]="item.url" target="_blank">
+            <i [className]="'bi bi-'+item.icon" [style.color]="item.color"></i>
+            {{item.name}}
+          </a>
+        }
+      </div>
+    </div>
+    }
   </div>
 </div>
 }

@@ -9,7 +9,7 @@
 .paper .paperContent {
   display: flex;
   gap: 1rem;
-  width: 70%;
+  max-width: 70%;
 }
 
 .paperContent .urlContent span {
@@ -40,13 +40,28 @@
   align-items: first baseline;
 }
 
+.actions .copyBtn {
+  background: #efefef;
+  color: #000;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 130%; /* 1.56563rem */
+}
+
 .actions button {
-    background: #fff;
-    border: 1px solid #2245c2;
-    border-radius: .2rem;
+  background: #fff;
+  border: 1px solid #2245c2;
+  border-radius: 0.2rem;
+  transition: all 0.1s ease;
+}
+
+.actions button:hover {
+  background: #bfbfbf18;
 }
 
 .actions .group {
-    display: flex;
-    gap: .5rem;
+  display: flex;
+  gap: 0.5rem;
 }

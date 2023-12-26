@@ -113,11 +113,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  updateUrl(data: any) {
-    
-    const updateObject = { title: data.title };
+  updateUrl(id: number, inputValue: string) {
+    let validInputValue =
+      inputValue !== undefined && inputValue !== null && inputValue !== ''
+        ? inputValue
+        : 'Untitled ---';
 
-    this._saveUrl.updateUrl(data.id, updateObject).subscribe({
+    const updateObject = { title: validInputValue };
+
+    this._saveUrl.updateUrl(id, updateObject).subscribe({
       next: () => {
         this.getSavedUrls(this.searchTerm);
         alert('Successfully Updated!');

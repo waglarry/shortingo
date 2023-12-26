@@ -122,7 +122,10 @@
           type="button"
           data-bs-dismiss="modal"
           class="btn btn-primary"
-          (click)="dashboardData.updateUrl(updateModel)"
+          (click)="
+            updateModel.modelId &&
+              dashboardData.updateUrl(updateModel.modelId, inputValue.value)
+          "
         >
           Save
         </button>

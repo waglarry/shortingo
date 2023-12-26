@@ -46,7 +46,7 @@
 
     <div class="bottomRow">
       <div class="leftCol">
-        <label for="Links"> 6 Links </label>
+        <label for="Links"> {{ urlsData.length }} Links </label>
 
         <button
           type="button"
@@ -78,4 +78,9 @@
 
   <hr />
 
+  @if (urlsData.length === 0) {
+    <p>No Links Yet.</p>
+  } @else {
+    <app-url-card></app-url-card>
+  }
 </section>

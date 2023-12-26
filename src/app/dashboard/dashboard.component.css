@@ -76,6 +76,14 @@ header {
   gap: 1rem;
 }
 
+.leftCol .totalLinks {
+  color: #000;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%; /* 2.275rem */
+}
+
 .rightCol {
   width: 30%;
 }
@@ -113,4 +121,3 @@ header {
   background: transparent;
   width: 3rem;
 }
-

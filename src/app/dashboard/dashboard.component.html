@@ -46,7 +46,7 @@
 
     <div class="bottomRow">
       <div class="leftCol">
-        <label for="Links"> {{ urlsData.length }} Links </label>
+        <label for="Links" class="totalLinks"> {{ urlsData.length }} Links </label>
 
         <button
           type="button"
@@ -58,8 +58,9 @@
         <button
           type="button"
           class="btn btn-light border border-primary-subtle btn-sm"
+          (click)="handleFilterUrlsByStared()"
         >
-          <i class="bi bi-star"></i>
+          <i [className]="filterStaredUrls ? 'bi bi-star-fill' : 'bi bi-star'"></i>
           Starred
         </button>
       </div>
@@ -69,6 +70,8 @@
             class="inputField"
             type="text"
             placeholder="Search for your URL"
+            [value]="searchTerm"
+            (input)="handleFilterUrls($event)"
           />
           <button class="searchBtn"><i class="bi bi-search"></i></button>
         </div>

@@ -113,19 +113,19 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  updateUrl(id: number) {
-    console.log('Item Id: ', id);
-    console.log(this.model);
+  updateUrl(data: any) {
+    
+    const updateObject = { title: data.title };
 
-    // this._saveUrl.updateUrl(id, this.model).subscribe({
-    //   next: () => {
-    //     this.getSavedUrls();
-    //     alert('Successfully Updated!');
-    //   },
-    //   error: (error) => {
-    //     console.log(error.message);
-    //   },
-    // });
+    this._saveUrl.updateUrl(data.id, updateObject).subscribe({
+      next: () => {
+        this.getSavedUrls(this.searchTerm);
+        alert('Successfully Updated!');
+      },
+      error: (error) => {
+        console.log(error.message);
+      },
+    });
   }
 
   handleCopyUrl(shortenedUrlElementRef: any) {

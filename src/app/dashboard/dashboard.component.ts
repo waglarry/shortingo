@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgTinyUrlService } from 'ng-tiny-url';
 import { ShortenedUrlsService } from '../services/shortened-urls.service';
 import { UrlCardComponent } from '../url-card/url-card.component';
+import { Router } from '@angular/router';
 
 export interface URLData {
   id?: number;
@@ -46,7 +47,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private _ngTinyUrlService: NgTinyUrlService,
-    private _saveUrl: ShortenedUrlsService
+    private _saveUrl: ShortenedUrlsService,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
@@ -178,5 +180,10 @@ export class DashboardComponent implements OnInit {
     } else {
       this.getSavedUrls(this.searchTerm);
     }
+  }
+
+  handleSignout() {
+    sessionStorage.removeItem('username');
+    this._router.navigate(['login']);
   }
 }

@@ -143,6 +143,10 @@ header {
   color: #fff;
 }
 
+.dropdown-item {
+  cursor: pointer;
+}
+
 .noLinks {
   display: flex;
   flex-direction: column;

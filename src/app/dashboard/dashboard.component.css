@@ -78,14 +78,14 @@ header {
 
 .leftCol .totalLinks {
   color: #000;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-style: normal;
   font-weight: 600;
   line-height: 130%; /* 2.275rem */
 }
 
 .rightCol {
-  width: 30%;
+  width: 43%;
 }
 
 .searchGroup {
@@ -95,7 +95,7 @@ header {
   border-radius: 3.125rem;
   border: 1px solid #2245c2;
   background: #fff;
-  padding: 0 0.2rem;
+  padding: 0.2rem;
 }
 
 .searchGroup .inputField {
@@ -120,6 +120,27 @@ header {
   outline: none;
   background: transparent;
   width: 3rem;
+}
+
+#profileContainer {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+#profileContainer:hover {
+  border: 1px solid #2245c2;
+}
+
+.profile {
+  display: flex;
+  height: 30px;
+  width: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #2245c2;
+  color: #fff;
 }
 
 .noLinks {

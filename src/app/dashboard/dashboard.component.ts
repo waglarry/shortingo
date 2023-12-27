@@ -147,7 +147,6 @@ export class DashboardComponent implements OnInit {
         this.isTextCopied = false;
       }, 2000);
     } catch (error) {
-      console.warn(error);
       alert('An error occured while copying. Please, try again!');
     }
   }

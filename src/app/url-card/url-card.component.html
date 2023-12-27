@@ -1,4 +1,4 @@
-@for (item of dashboardData.urlsData.reverse(); track item) {
+@for (item of dashboardData.urlsData; track item) {
 
 <div class="paper">
   <div class="paperContent">
@@ -39,20 +39,22 @@
     </button>
 
     <div class="group">
-      <button (click)="item.id && dashboardData.handleStarUrl(item.id)">
+      <button class="actionBtn" (click)="item.id && dashboardData.handleStarUrl(item.id)">
         <i [className]="item.stared ? 'bi bi-star-fill' : 'bi bi-star'"></i>
       </button>
       <button
+      class="actionBtn"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
         (click)="setModelId(item)"
       >
         <i class="bi bi-pencil-fill"></i>
       </button>
-      <button (click)="item.id && dashboardData.deleteUrl(item.id)">
+      <button class="actionBtn" (click)="item.id && dashboardData.deleteUrl(item.id)">
         <i class="bi bi-trash-fill"></i>
       </button>
       <button
+      class="actionBtn"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
         (click)="handleShare()"

@@ -27,9 +27,9 @@ export class DashboardComponent implements OnInit {
   linkIconUrl: string = 'assets/images/link.svg';
 
   date: string = new Date().toISOString();
-  isFormSubmitted = false;
-  isLoading = false;
-  isTextCopied = false;
+  isFormSubmitted: boolean = false;
+  isLoading: boolean = false;
+  textCopied: string = '';
   searchTerm: string = '';
   filterStaredUrls: boolean = false;
 
@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private _ngTinyUrlService: NgTinyUrlService,
-    private _saveUrl: ShortenedUrlsService,
+    private _saveUrl: ShortenedUrlsService
   ) {}
 
   ngOnInit(): void {
@@ -141,12 +141,13 @@ export class DashboardComponent implements OnInit {
 
     try {
       navigator.clipboard.writeText(inputElement.value);
-      this.isTextCopied = true;
+      this.textCopied = inputElement.value.trim().toLowerCase();
 
       setTimeout(() => {
-        this.isTextCopied = false;
+        this.textCopied = '';
       }, 2000);
     } catch (error) {
+      this.textCopied = '';
       alert('An error occured while copying. Please, try again!');
     }
   }

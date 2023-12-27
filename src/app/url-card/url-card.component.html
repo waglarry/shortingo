@@ -35,7 +35,7 @@
       (click)="dashboardData.handleCopyUrl(shortenedUrlElementRef)"
     >
       <i class="bi bi-copy"></i>
-      {{ dashboardData.isTextCopied ? "copied" : "copy" }}
+      {{ dashboardData.textCopied === item.shortenedUrl ? "copied" : "copy" }}
     </button>
 
     <div class="group">
@@ -146,7 +146,7 @@
           (click)="dashboardData.handleCopyUrl(shortenedUrlElementRef)"
         >
           <i class="bi bi-copy"></i>
-          {{ dashboardData.isTextCopied ? "copied" : "copy" }}
+          {{ dashboardData.textCopied ? "copied" : "copy" }}
         </button>
       </div>
       <div class="modal-body" id="socialMedia">

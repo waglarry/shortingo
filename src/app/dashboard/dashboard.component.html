@@ -82,7 +82,10 @@
   <hr />
 
   @if (urlsData.length === 0) {
-    <p>No Links Yet.</p>
+    <div class="noLinks">
+      <h4>No Links Yet.</h4>
+      <p>Start pasting your links to shorten it!</p>
+    </div>
   } @else {
     <app-url-card></app-url-card>
   }

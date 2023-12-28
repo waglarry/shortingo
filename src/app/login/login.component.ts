@@ -17,6 +17,9 @@ export class LoginComponent {
     private router: Router
   ) {}
 
+  brandImageUrl: string = 'assets/images/Shortingo.svg';
+  loginIllusion: string = 'assets/images/loginIllusion.svg';
+
   loginForm = this._builder.group({
     email: this._builder.control('', [Validators.required, Validators.email]),
     password: this._builder.control(

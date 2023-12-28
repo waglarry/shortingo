@@ -17,6 +17,9 @@ export class RegisterComponent {
     private router: Router
   ) {}
 
+  brandImageUrl: string = 'assets/images/Shortingo.svg';
+  registerIllusion: string = 'assets/images/registerIllusion.svg';
+
   registerForm = this._builder.group({
     username: this._builder.control('', Validators.required),
     email: this._builder.control(

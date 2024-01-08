@@ -19,6 +19,7 @@ export class LoginComponent {
 
   brandImageUrl: string = 'assets/images/Shortingo.svg';
   loginIllusion: string = 'assets/images/loginIllusion.svg';
+  isLoading: boolean = false;
 
   loginForm = this._builder.group({
     email: this._builder.control('', [Validators.required, Validators.email]),
@@ -28,28 +29,32 @@ export class LoginComponent {
     ),
   });
 
-  userData: any;
-
   handleLogin() {
+    this.isLoading = true;
     let formData = this.loginForm.value;
-    let username = formData.email?.trim().toLowerCase();
-
+    
     if (this.loginForm.valid) {
-      this._authService.getByCode(username).subscribe({
+      this._authService.login(formData).subscribe({
         next: (response: any) => {
-          response?.map((data: Object) => {
-            this.userData = data;
-          });
-
-          if (this.userData?.password === formData.password) {
-            sessionStorage.setItem('username', this.userData.id);
-            this.router.navigate(['dashboard']);
-          } else {
-            alert('Email or Password is wrong!');
+          this.isLoading = false;
+          alert(response.message);
+          this.router.navigate(['dashboard']);
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('userId', response.userId);
+          sessionStorage.setItem('email', response.email);
+          sessionStorage.setItem('username', response.username);
+          
+        }, error: (error) => {
+          this.isLoading = false;
+          if (error?.status === 401) {
+            alert('Email or Password is wrong!')
+          } else if (error?.status === 400) {
+            alert(error?.error?.message);
           }
-        },
+        }
       });
     } else {
+      this.isLoading = false;
       alert('Invalid Credentials!');
     }
   }

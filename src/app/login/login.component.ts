@@ -22,7 +22,10 @@ export class LoginComponent {
   isLoading: boolean = false;
 
   loginForm = this._builder.group({
-    email: this._builder.control('', [Validators.required, Validators.email]),
+    email: this._builder.control(
+      '',
+      Validators.compose([Validators.required, Validators.email])
+    ),
     password: this._builder.control(
       '',
       Validators.compose([Validators.required, Validators.minLength(8)])

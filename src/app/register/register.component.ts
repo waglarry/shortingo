@@ -31,7 +31,10 @@ export class RegisterComponent {
       '',
       Validators.compose([Validators.required, Validators.minLength(8)])
     ),
-    confirmPassword: this._builder.control('', Validators.required),
+    confirmPassword: this._builder.control(
+      '',
+      Validators.compose([Validators.required, Validators.minLength(8)])
+    ),
   });
 
   handleRegister() {

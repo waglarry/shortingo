@@ -6,13 +6,13 @@ import { UrlCardComponent } from '../url-card/url-card.component';
 import { Router } from '@angular/router';
 
 export interface URLData {
-  id?: number;
+  _id: string;
   title: string;
-  shortenedUrl: string;
-  inputUrl: string;
-  postDate: string;
-  urlLogo: string;
-  stared: boolean;
+  shortLink: string;
+  ogLink: string;
+  starred: boolean;
+  date: string;
+  copied?: boolean;
 }
 
 @Component({
@@ -30,17 +30,27 @@ export class DashboardComponent implements OnInit {
   date: string = new Date().toISOString();
   isFormSubmitted: boolean = false;
   isLoading: boolean = false;
-  textCopied: string = '';
+  gettingData: boolean = false;
   searchTerm: string = '';
   filterStaredUrls: boolean = false;
+  userId = sessionStorage.getItem('userId');
+  email = sessionStorage.getItem('email');
+  username = sessionStorage.getItem('username');
+
+  noDataTitle = 'No URLs Saved Yet.';
+  noDataSubTitle = 'Start pasting your long URLs to shorten it!';
 
   model: URLData = {
     title: `Untitled ${this.date}`,
-    shortenedUrl: '',
-    inputUrl: '',
-    postDate: new Date().toDateString(),
-    urlLogo: 'assets/images/urlIcon.svg',
-    stared: false,
+    shortLink: '',
+    ogLink: '',
+    starred: false,
+    date: new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }),
+    _id: '',
   };
 
   urlsData: Array<URLData> = [];
@@ -52,26 +62,29 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getSavedUrls(this.searchTerm);
+    this.getSavedUrls();
     this.urlsData?.reverse();
   }
 
   handleOnSubmit() {
     this.isLoading = true;
-    if (this.model.inputUrl !== '') {
-      this._ngTinyUrlService.shorten(this.model.inputUrl).subscribe({
+    if (this.model.ogLink !== '') {
+      this._ngTinyUrlService.shorten(this.model.ogLink).subscribe({
         next: (shortUrl) => {
-          this.model.shortenedUrl = shortUrl;
+          this.model.shortLink = shortUrl;
           this.isFormSubmitted = true;
           this.isLoading = false;
 
-          this._saveUrl.saveUrlToDatebase(this.model).subscribe({
+          this._saveUrl.saveUrl(this.model).subscribe({
             next: () => {
-              this.getSavedUrls(this.searchTerm);
-              this.model.inputUrl = '';
+              this.model.ogLink = '';
+              this.getSavedUrls();
             },
             error: (error) => {
               console.log(error.message);
+            },
+            complete: () => {
+              alert('Long link is successfully shortened!');
             },
           });
         },
@@ -86,36 +99,66 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  getSavedUrls(searchTerm: string) {
-    this._saveUrl.getSavedUrls(searchTerm).subscribe({
-      next: (response: Array<URLData>) => {
-        this.urlsData = response;
-        this.urlsData.reverse();
-      },
-      error: (error: any) => {
-        console.log(error.message);
-      },
-    });
+  getSavedUrls() {
+    if (this.userId !== null) {
+      this.gettingData = true;
+      this._saveUrl.getAllUserUrls(this.userId).subscribe({
+        next: (response: Array<URLData>) => {
+          this.gettingData = false;
+          this.urlsData = response?.map((item: any) => {
+            return { ...item, copied: false };
+          });
+          this.urlsData.reverse();
+        },
+        error: (error) => {
+          this.gettingData = false;
+
+          if (error?.status === 404) {
+            alert(
+              'Something went wrong, please check your internet and try again!'
+            );
+          } else if (error?.status === 403) {
+            alert('Session expired, re-login to connect to the server!');
+            this._router.navigate(['login']);
+          }
+        },
+      });
+    }
   }
 
-  handleFilterUrls(event: any) {
-    this.searchTerm = event.target.value;
-    this.getSavedUrls(this.searchTerm);
+  handleFilterUrls() {
+    this.urlsData;
+    // this.searchTerm = event.target.value;
+    this._saveUrl.getAllUserUrls(this.searchTerm).subscribe({
+      next(response: Array<URLData>) {
+        console.log(response);
+        
+     }, error(err) {
+       console.log(err);
+       
+     },
+   });
   }
 
-  deleteUrl(id: number) {
+  handleDeleteUrl(id: string) {
     this._saveUrl.deleteUrl(id).subscribe({
-      next: () => {
-        this.getSavedUrls(this.searchTerm);
-        alert('Successfully deleted!');
+      next: (response) => {
+        alert(response.message);
       },
       error: (error) => {
-        console.log(error.message);
+        console.log(error);
+        
+        alert("Network issue, please try again!")
+        // alert('Session expired, re-login to connect to the server!');
+        // this._router.navigate(['login']);
+      },
+      complete: () => {
+        this.getSavedUrls();
       },
     });
   }
 
-  updateUrl(id: number, inputValue: string) {
+  handleUpdateUrl(id: string, inputValue: string) {
     let validInputValue =
       inputValue !== undefined && inputValue !== null && inputValue !== ''
         ? inputValue
@@ -125,8 +168,7 @@ export class DashboardComponent implements OnInit {
 
     this._saveUrl.updateUrl(id, updateObject).subscribe({
       next: () => {
-        this.getSavedUrls(this.searchTerm);
-        alert('Successfully Updated!');
+        this.getSavedUrls();
       },
       error: (error) => {
         console.log(error.message);
@@ -134,37 +176,37 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  handleCopyUrl(shortenedUrlElementRef: any) {
+  handleCopyUrl(shortenedUrlElementRef: any, index: number) {
     let inputElement = document.createElement('input');
     inputElement.setAttribute('type', 'text');
-    inputElement.setAttribute('value', shortenedUrlElementRef.innerHTML);
+    inputElement.setAttribute('value', shortenedUrlElementRef?.innerHTML);
     inputElement.select();
     inputElement.setSelectionRange(0, 999999); // This is for mobile selection.
 
     try {
       navigator.clipboard.writeText(inputElement.value);
-      this.textCopied = inputElement.value.trim().toLowerCase();
+      this.urlsData[index].copied = true;
 
       setTimeout(() => {
-        this.textCopied = '';
+        this.urlsData[index].copied = false;
       }, 2000);
     } catch (error) {
-      this.textCopied = '';
-      alert('An error occured while copying. Please, try again!');
+      this.urlsData[index].copied = false;
+      alert('An error occurred while copying. Please, try again!');
     }
   }
 
-  handleStarUrl(id: number) {
-    this.model.stared = !this.model.stared;
+  handleStarUrl(id: string) {
+    this.model.starred = !this.model.starred;
 
-    const updateObject = { stared: this.model.stared };
+    const updateObject = { starred: this.model.starred };
 
     this._saveUrl.updateUrl(id, updateObject).subscribe({
       next: () => {
-        this.getSavedUrls(this.searchTerm);
+        this.getSavedUrls();
       },
-      error: (error) => {
-        console.log(error.message);
+      error: () => {
+        alert('Network issue, please try again!');
       },
     });
   }
@@ -173,12 +215,16 @@ export class DashboardComponent implements OnInit {
     this.filterStaredUrls = !this.filterStaredUrls;
     let urlsDataCopied = [...this.urlsData];
 
-    const staredUrls = urlsDataCopied?.filter((url) => url.stared);
+    const staredUrls = urlsDataCopied?.filter((url) => url.starred);
 
     if (this.filterStaredUrls) {
+      this.noDataTitle = 'No URLs starred yet.';
+      this.noDataSubTitle = 'Start starring your favorite short URLs!';
       [...this.urlsData] = staredUrls;
     } else {
-      this.getSavedUrls(this.searchTerm);
+      this.getSavedUrls();
+      this.noDataTitle = 'No URLs Saved Yet.';
+      this.noDataSubTitle = 'Start pasting your long URLs to shorten it!';
     }
   }
 

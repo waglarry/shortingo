@@ -1,9 +1,9 @@
-import { Component, PlatformRef } from '@angular/core';
+import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { FormsModule } from '@angular/forms';
 
 interface UpdateDetails {
-  modelId?: number;
+  modelId?: string;
   title: string;
 }
 
@@ -21,26 +21,27 @@ interface MediaPlaforms {
   styleUrl: './url-card.component.css',
 })
 export class UrlCardComponent {
-  constructor(
-    public dashboardData: DashboardComponent,
-    private platfrom: PlatformRef
-  ) {}
+  constructor(public _dashboardData: DashboardComponent) {}
 
-  modelDialog: string = 'share';
+  modalDialog: string = 'share';
 
   updateModel: UpdateDetails = {
     title: '',
   };
 
   setModelId(item: any) {
-    this.modelDialog = 'edit';
+    this.modalDialog = 'edit';
 
-    this.updateModel.modelId = item.id;
+    this.updateModel.modelId = item._id;
     this.updateModel.title = item.title;
   }
 
-  handleShare() {
-    this.modelDialog = 'share';
+  url!: string;
+  modalIndex!: number;
+  handleShare(index: number, shortenedUrlElementRef: any) {
+    this.modalDialog = 'share';
+    this.url = shortenedUrlElementRef.value;
+    this.modalIndex = index;
   }
 
   mediaPlatforms: MediaPlaforms[] = [
@@ -48,7 +49,9 @@ export class UrlCardComponent {
       name: 'Facebook',
       icon: 'facebook',
       color: '#4267B2',
-      url: 'https://web.facebook.com/?_rdc=1&_rdr',
+      url: `https://www.facebook.com/sharer/sharer.php?u=${
+        this.url !== undefined && this.url
+      }&amp;src=sdkpreparse`,
     },
     {
       name: 'Instagram',
@@ -60,7 +63,9 @@ export class UrlCardComponent {
       name: 'WhatsApp',
       icon: 'whatsapp',
       color: '#25D366',
-      url: '',
+      url: `https://web.whatsapp.com/send?text=${
+        this.url !== undefined && this.url
+      }`,
     },
     {
       name: 'Pinterest',

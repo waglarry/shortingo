@@ -19,6 +19,7 @@ export class RegisterComponent {
 
   brandImageUrl: string = 'assets/images/Shortingo.svg';
   registerIllusion: string = 'assets/images/registerIllusion.svg';
+  isLoading: boolean = false;
 
   registerForm = this._builder.group({
     username: this._builder.control('', Validators.required),
@@ -34,6 +35,7 @@ export class RegisterComponent {
   });
 
   handleRegister() {
+    this.isLoading = true;
     let formData = this.registerForm.value;
     if (this.registerForm.valid) {
       if (formData.password !== formData.confirmPassword) {
@@ -41,11 +43,17 @@ export class RegisterComponent {
       } else {
         this._authService.register(formData).subscribe({
           next: () => {
+            this.isLoading = false;
             this.router.navigate(['login']);
+          },
+          error: (error) => {
+            this.isLoading = false;
+            alert(error.error.message);
           },
         });
       }
     } else {
+      this.isLoading = false;
       alert('Invalid Credentials!');
     }
   }

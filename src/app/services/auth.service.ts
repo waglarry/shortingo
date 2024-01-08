@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -7,17 +8,34 @@ import { Injectable } from '@angular/core';
 export class AuthService {
   constructor(private _http: HttpClient) {}
 
-  endPoint = 'http://localhost:3000/user';
+  baseUrl =
+    'https://shortingo-api.onrender.com/api';
 
-  getUsers() {
-    return this._http.get(this.endPoint);
+  headerDict = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
+  register(inputData: any): Observable<any> {
+    return this._http.post<object>(
+      `${this.baseUrl}/auth/register`,
+      inputData,
+      {
+        headers: this.headerDict,
+      }
+    );
   }
 
-  getByCode(code: any) {
-    return this._http.get(`${this.endPoint}/?email=${code}`);
+  login(inputData: any): Observable<any> {
+    return this._http.post<object>(`${this.baseUrl}/auth/login`, inputData, {
+      headers: this.headerDict,
+    });
   }
 
-  register(inputData: any) {
-    return this._http.post(this.endPoint, inputData);
+  isLoggedIn() {
+    const token = sessionStorage.getItem('token');
+    return token != null;
   }
+
 }

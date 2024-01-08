@@ -48,7 +48,14 @@ export class RegisterComponent {
           },
           error: (error) => {
             this.isLoading = false;
-            alert(error.error.message);
+
+            if (error?.status === 400) {
+              alert(error?.error?.message);
+            } else if (error?.status === 0) {
+              alert('Something went wrong, check your internet and try again!');
+            } else {
+              alert(error?.message);
+            }
           },
         });
       }

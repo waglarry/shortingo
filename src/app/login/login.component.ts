@@ -32,7 +32,7 @@ export class LoginComponent {
   handleLogin() {
     this.isLoading = true;
     let formData = this.loginForm.value;
-    
+
     if (this.loginForm.valid) {
       this._authService.login(formData).subscribe({
         next: (response: any) => {
@@ -43,15 +43,20 @@ export class LoginComponent {
           sessionStorage.setItem('userId', response.userId);
           sessionStorage.setItem('email', response.email);
           sessionStorage.setItem('username', response.username);
-          
-        }, error: (error) => {
+        },
+        error: (error) => {
           this.isLoading = false;
+
           if (error?.status === 401) {
-            alert('Email or Password is wrong!')
+            alert('Email or Password is wrong!');
           } else if (error?.status === 400) {
             alert(error?.error?.message);
+          } else if (error?.status === 0) {
+            alert('Something went wrong, check your internet and try again!');
+          } else {
+            alert(error?.message);
           }
-        }
+        },
       });
     } else {
       this.isLoading = false;

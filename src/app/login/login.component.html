@@ -1,6 +1,6 @@
 <section>
   <header>
-    <img [src]="brandImageUrl" alt="" />
+    <img routerLink="/" [src]="brandImageUrl" alt="" />
   </header>
   <main>
     <div class="image">
@@ -9,7 +9,7 @@
     <div class="formContanier">
       <h3>Login and start using shortingo</h3>
       <p class="accountCheck">
-        Don't have an account? <a routerLink="/register">Sign In</a>
+        Don't have an account? <a routerLink="/register">Sign Up</a>
       </p>
       <h4>OR</h4>
       <button type="button" class="btn">Log in with Google</button>
@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" class="btn">{{isLoading ? 'Loging in...' : 'Login'}}</button>
       </form>
       <p class="footerContent">
         By Signing in, you agree to <br />

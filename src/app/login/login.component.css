@@ -9,6 +9,10 @@ header {
   border-bottom: 2px solid #ccc;
 }
 
+header img {
+  cursor: pointer;
+}
+
 main {
   display: flex;
   align-items: center;

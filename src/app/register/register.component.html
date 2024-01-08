@@ -1,6 +1,6 @@
 <section>
   <header>
-    <img [src]="brandImageUrl" alt="" />
+    <img routerLink="/" [src]="brandImageUrl" alt="" />
   </header>
   <main>
     <div class="image">
@@ -50,7 +50,7 @@
           />
         </div>
 
-        <button type="submit" class="btn">Create account</button>
+        <button type="submit" class="btn">{{isLoading ? 'Creating...' : 'Create account'}}</button>
       </form>
       <p class="footerContent">
         By Signing up, you agree to <br />

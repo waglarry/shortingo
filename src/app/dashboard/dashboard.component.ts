@@ -27,7 +27,24 @@ export class DashboardComponent implements OnInit {
   brandImageUrl: string = 'assets/images/Shortingo.svg';
   linkIconUrl: string = 'assets/images/link.svg';
 
-  date: string = new Date().toISOString();
+  currentDate = new Date();
+  date: string = `${this.currentDate.getUTCFullYear()}-${(
+    this.currentDate.getUTCMonth() + 1
+  )
+    .toString()
+    .padStart(2, '0')}${this.currentDate
+    .getUTCDate()
+    .toString()
+    .padStart(2, '0')} ${this.currentDate
+    .getUTCHours()
+    .toString()
+    .padStart(2, '0')}:${this.currentDate
+    .getUTCMinutes()
+    .toString()
+    .padStart(2, '0')}:${this.currentDate
+    .getUTCSeconds()
+    .toString()
+    .padStart(2, '0')} UTC`;
   isFormSubmitted: boolean = false;
   isLoading: boolean = false;
   gettingData: boolean = false;
@@ -83,9 +100,6 @@ export class DashboardComponent implements OnInit {
             error: (error) => {
               console.log(error.message);
             },
-            complete: () => {
-              alert('Long link is successfully shortened!');
-            },
           });
         },
         error: () => {
@@ -126,18 +140,25 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  handleFilterUrls() {
-    this.urlsData;
-    // this.searchTerm = event.target.value;
-    this._saveUrl.getAllUserUrls(this.searchTerm).subscribe({
-      next(response: Array<URLData>) {
-        console.log(response);
-        
-     }, error(err) {
-       console.log(err);
-       
-     },
-   });
+  handleFilterUrls(event: any) {
+    this.searchTerm = event.target.value;
+
+    let searchResult = this.urlsData.filter(
+      (obj) =>
+        obj.title?.toLowerCase().includes(this.searchTerm?.toLowerCase()) ||
+        obj.shortLink?.toLowerCase().includes(this.searchTerm?.toLowerCase()) ||
+        obj.ogLink?.toLowerCase().includes(this.searchTerm?.toLowerCase())
+    );
+
+    if (!this.searchTerm || this.searchTerm === '') {
+      this.getSavedUrls();
+      this.noDataTitle = 'No URLs Saved Yet.';
+      this.noDataSubTitle = 'Start pasting your long URLs to shorten it!';
+    } else {
+      this.urlsData = searchResult;
+      this.noDataTitle = 'URL not found!';
+      this.noDataSubTitle = '';
+    }
   }
 
   handleDeleteUrl(id: string) {
@@ -146,11 +167,7 @@ export class DashboardComponent implements OnInit {
         alert(response.message);
       },
       error: (error) => {
-        console.log(error);
-        
-        alert("Network issue, please try again!")
-        // alert('Session expired, re-login to connect to the server!');
-        // this._router.navigate(['login']);
+        alert('Network issue, please try again!');
       },
       complete: () => {
         this.getSavedUrls();

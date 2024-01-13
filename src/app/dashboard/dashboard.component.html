@@ -12,7 +12,7 @@
             name="inputUrl"
             class="inputField"
             placeholder="Paste your URL here..."
-            [(ngModel)]="model.inputUrl"
+            [(ngModel)]="model.ogLink"
           />
         </div>
 
@@ -30,17 +30,32 @@
           aria-expanded="false"
         >
           <span class="visually-hidden"> Toggle Dropdown</span>
-          <div type="button" class="profile">J</div>
-          John Doe
+          <div type="button" class="profile">
+            {{ username?.charAt(0)?.toUpperCase() }}
+          </div>
+          {{ username }}
         </button>
         <ul class="dropdown-menu">
+          <div class="inner-profile-container">
+            <div type="button" class="inner-profile">
+              {{ username?.charAt(0)?.toUpperCase() }}
+            </div>
+            <div>
+              <span>{{ username }}</span>
+              <br />
+              <span>{{ email }}</span>
+            </div>
+          </div>
+          <li><hr class="dropdown-divider" /></li>
           <li><a class="dropdown-item" href="#">Payment method</a></li>
           <li><a class="dropdown-item" href="#">Updrage</a></li>
           <li><a class="dropdown-item" href="#">Account settings</a></li>
           <li><a class="dropdown-item" href="#">Subscription</a></li>
           <li><a class="dropdown-item" href="#">API</a></li>
           <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" (click)="handleSignout()">Sign out</a></li>
+          <li>
+            <a class="dropdown-item" (click)="handleSignout()">Sign out</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -75,8 +90,8 @@
             <input
               class="inputField"
               type="text"
-              placeholder="Search for your URL"
               [value]="searchTerm"
+              placeholder="Search for your URL"
               (input)="handleFilterUrls($event)"
             />
             <button class="searchBtn"><i class="bi bi-search"></i></button>
@@ -88,12 +103,18 @@
 
   <hr />
 
-  @if (urlsData.length === 0) {
+  @if (gettingData) {
+  <!-- <app-loading></app-loading> -->
+  <div class="loading-screen">
+    <div class="loader"></div>
+    <p>Loading...</p>
+  </div>
+  } @else { @if (urlsData.length === 0) {
   <div class="noLinks">
-    <h4>No Links Yet.</h4>
-    <p>Start pasting your links to shorten it!</p>
+    <h4>{{noDataTitle}}</h4>
+    <p>{{noDataSubTitle}}</p>
   </div>
   } @else {
   <app-url-card></app-url-card>
-  }
+  } }
 </section>

@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-createnewpassword',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './createnewpassword.component.html',
-  styleUrl: './createnewpassword.component.css'
+  styleUrl: './createnewpassword.component.css',
 })
 export class CreatenewpasswordComponent {
-
+  isLoading: boolean = false;
 }
